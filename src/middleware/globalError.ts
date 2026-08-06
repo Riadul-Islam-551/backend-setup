@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { ApiResponse } from "../utils/apiResponse.js";
 
 const globalError = (
   error: any,
@@ -6,10 +7,10 @@ const globalError = (
   res: Response,
   next: NextFunction,
 ) => {
-  res.status(500).json({
-    success: false,
-    message: error.message || "something went wrong",
-  });
+  const statusCode = error.statusCode || 500;
+  const message = error.message || "something went wrong !";
+
+  return ApiResponse.error(res, statusCode, message, error);
 };
 
 export default globalError;

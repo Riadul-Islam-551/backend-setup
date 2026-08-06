@@ -1,11 +1,35 @@
 import type { Response } from "express";
+import { env } from "../config/env.js";
 
-const apiResponse = (res: Response, data: any, message: string) => {
-  res.json({
+const success = (
+  res: Response,
+  statusCode: number,
+  message: string,
+  data: any,
+) => {
+  return res.status(statusCode).json({
     success: true,
+    statusCode,
     message,
     data,
   });
 };
 
-export default apiResponse;
+const error = (
+  res: Response,
+  statusCode: number,
+  message: string,
+  error: any,
+) => {
+  return res.status(statusCode).json({
+    success: true,
+    statusCode,
+    message,
+    ...(env.nodeEnv === "development" && { stack: error.stack }),
+  });
+};
+
+export const ApiResponse = {
+  success,
+  error,
+};
