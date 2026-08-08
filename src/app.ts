@@ -6,8 +6,6 @@ import router from "./routes/routes.js";
 import notFound from "./middleware/notFound.js";
 import globalError from "./middleware/globalError.js";
 
-// import routes from './routes/routes.js'
-
 const app: Application = express();
 
 app.use(cors());
