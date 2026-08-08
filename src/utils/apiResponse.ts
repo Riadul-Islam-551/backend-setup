@@ -22,7 +22,7 @@ const error = (
   error: any,
 ) => {
   return res.status(statusCode).json({
-    success: true,
+    success: false,
     statusCode,
     message,
     ...(env.nodeEnv === "development" && { stack: error.stack }),
