@@ -113,6 +113,9 @@ where full_name LIKE 'r%'
 SELECT * FROM users
 where full_name ILIKE 'r%'
 
+SELECT * FROM users
+where full_name ILIKE '%sa%'
+
 --- order by
 SELECT * FROM users
 order by username
@@ -176,3 +179,43 @@ where username BETWEEN 'hashem' AND 'pari'
 order by order_count DESC
 
 select * FROM users
+
+
+-- join the table
+
+CREATE TABLE department (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY ,
+    department_name VARCHAR(50) NOT NULL UNIQUE
+)
+
+INSERT INTO department (department_name)
+VALUES
+('BANGLA'),
+('MATH')
+
+SELECT * FROM department
+
+CREATE TABLE students (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    department_id INTEGER references department(id),
+    student_name VARCHAR(100)
+)
+
+
+INSERT INTO students (department_id, student_name)
+VALUES
+(2, 'halim')
+
+SELECT students.id, department.department_name, students.student_name FROM students
+inner join department
+on students.department_id = department.id
+where department_name = 'BBA'
+
+
+-- group by is used for counting group wise
+SELECT department.department_name, count(students.id) as total_students FROM students
+inner join department
+on students.department_id = department.id
+group by department.department_name
+
+
