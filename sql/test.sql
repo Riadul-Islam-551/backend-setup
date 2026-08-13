@@ -178,8 +178,17 @@ SELECT * FROM users
 where username BETWEEN 'hashem' AND 'pari'
 order by order_count DESC
 
-select * FROM users
+-- case 
+select *,
+case
+when order_count < 4 then 'Low category user'
+when order_count > 4 then 'Heigh category user'
+else 
+'Normal user'
+end as "user category"
+FROM users
 
+select * FROM users 
 
 -- join the table
 
