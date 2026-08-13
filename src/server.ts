@@ -1,6 +1,7 @@
 import http, { type Server } from "http";
 import app from "./app.js";
 import { env } from "./config/env.js";
+import { connectDatabase, prisma } from "./lib/prisma.js";
 
 const port = env.port;
 
@@ -9,6 +10,8 @@ let server: Server;
 
 const bootstrap = async () => {
   try {
+    connectDatabase();
+
     const httpServer = http.createServer(app);
 
     server = httpServer.listen(port, () => {
@@ -45,9 +48,6 @@ const bootstrap = async () => {
         process.exit(1);
       });
     });
-
-
-
   } catch (error) {
     console.error("server stopped", error);
   }

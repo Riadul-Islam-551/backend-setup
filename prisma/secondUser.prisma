@@ -1,0 +1,5 @@
+model secondUser {
+  id    String @default(uuid())
+  name  String
+  email String @unique
+}

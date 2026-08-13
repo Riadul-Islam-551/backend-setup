@@ -1,3 +1,5 @@
+
+import { prisma } from "../../lib/prisma.js";
 import AppError from "../../utils/appError.js";
 
 const loginUser = async (email: string, password: number) => {
