@@ -3,15 +3,14 @@ import catchAsync from "../../utils/catchAsync.js";
 import { authService } from "./auth.service.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
 import { userRegisterSchema } from "./auth.validation.js";
-import HttpStatus  from "http-status-codes";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
-  console.log("BODY:", req.body);
+  // console.log("BODY:", req.body);
   const data = userRegisterSchema.parse(req.body);
 
   const result = await authService.registerUser(data);
 
-  ApiResponse.success(res, HttpStatus.CREATED , "user registered successfully!", result);
+  ApiResponse.created(res, "user registered successfully!", result);
 });
 
 export const authController = {
