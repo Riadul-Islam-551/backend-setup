@@ -10,7 +10,7 @@ let server: Server;
 
 const bootstrap = async () => {
   try {
-    connectDatabase();
+     connectDatabase();
 
     const httpServer = http.createServer(app);
 

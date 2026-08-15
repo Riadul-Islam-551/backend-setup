@@ -2,19 +2,18 @@ import type { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync.js";
 import { authService } from "./auth.service.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
+import { userRegisterSchema } from "./auth.validation.js";
+import HttpStatus  from "http-status-codes";
 
-const loginUser = catchAsync(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+const registerUser = catchAsync(async (req: Request, res: Response) => {
+  console.log("BODY:", req.body);
+  const data = userRegisterSchema.parse(req.body);
 
-  if (!email || !password) {
-    throw new Error("Email and password required");
-  }
+  const result = await authService.registerUser(data);
 
-  const result = await authService.loginUser(email, password);
-
-  ApiResponse.success(res, 200, "login successfully", result);
+  ApiResponse.success(res, HttpStatus.CREATED , "user registered successfully!", result);
 });
 
 export const authController = {
-  loginUser,
+  registerUser,
 };

@@ -1,4 +1,9 @@
 model products {
-  id   String @id @default(uuid())
-  name String
+  id          String @id @default(uuid())
+  userId      String
+  name        String
+  category    String
+  description String
+  price       Int
+  users       Users  @relation(fields: [userId], references: [id])
 }

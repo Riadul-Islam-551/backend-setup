@@ -1,20 +1,35 @@
-
 import { prisma } from "../../lib/prisma.js";
-import AppError from "../../utils/appError.js";
+import type { UserRegisterInput } from "./auth.validation.js";
+import bcrypt from "bcrypt";
+import { env } from "../../config/env.js";
+import { conflictError } from "../../utils/httpStatusError.js";
 
-const loginUser = async (email: string, password: number) => {
-  const user = {
-    email: "riadul@gmail.com",
-    password: 123456,
-  };
+const registerUser = async (data: UserRegisterInput) => {
+  const existingUser = await prisma.users.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
 
-  if (!user) throw AppError(404, "User not found");
-  if (user.email !== email || user.password !== password)
-    throw AppError(401, "invalid email or password");
+  if (existingUser)
+    throw conflictError('user already registered')
 
+  const hashPassword = await bcrypt.hash(data.password, Number(env.saltRounds));
+
+  const user = await prisma.users.create({
+    data: {
+      name: data.name,
+      email: data.email,
+      password: hashPassword,
+    },
+    select: {
+      name: true,
+      email: true,
+    },
+  });
   return user;
 };
 
 export const authService = {
-  loginUser,
+  registerUser,
 };

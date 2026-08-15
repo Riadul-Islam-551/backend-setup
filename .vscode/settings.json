@@ -1,5 +1,5 @@
 {
-    "postman.settings.dotenv-detection-notification-visibility": false,
+    "postman.settings.dotenv-detection-notification-visibility": true,
     "sqltools.connections": [
         {
             "ssh": "Disabled",
