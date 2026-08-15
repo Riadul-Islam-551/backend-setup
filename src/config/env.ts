@@ -9,4 +9,5 @@ export const env = {
   port: envVariables.PORT,
   nodeEnv: envVariables.NODE_ENV,
   databaseURL: envVariables.DATABASE_URL,
+  saltRounds: envVariables.SALT_ROUNDS
 };

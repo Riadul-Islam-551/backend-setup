@@ -1,0 +1,10 @@
+model Users {
+  id       String     @id @default(uuid())
+  name     String
+  email    String     @unique
+  password String
+  bio      String?
+  phone    String?
+  avatar   String?
+  products products[]
+}
