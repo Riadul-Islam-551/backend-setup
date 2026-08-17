@@ -41,6 +41,18 @@ const updatedUser = catchAsync(async (req: Request, res: Response) => {
   ApiResponse.ok(res, "User updated successfully!", result);
 });
 
+const getSpecificUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id || Array.isArray(id)) {
+    throw badRequestError("Invalid user ID");
+  }
+
+  const result = await authService.getSpecificUser(id);
+
+  ApiResponse.ok(res, "User retrieved successfully!", result);
+});
+
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await authService.getAllUsers();
 
@@ -62,4 +74,5 @@ export const authController = {
   deleteUser,
   updatedUser,
   getAllUsers,
+  getSpecificUser,
 };

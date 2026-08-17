@@ -147,6 +147,24 @@ const updateUser = async (id: string, data: UserUpdateInput) => {
   return user;
 };
 
+const getSpecificUser = async (id: string) => {
+  const user = await prisma.users.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      bio: true,
+      phone: true,
+      avatar: true,
+    },
+  });
+
+  return user
+};
+
 const getAllUsers = async () => {
   const users = await prisma.users.findMany({
     select: {
@@ -167,5 +185,6 @@ export const authService = {
   registerUser,
   deleteUser,
   updateUser,
+  getSpecificUser,
   getAllUsers,
 };
