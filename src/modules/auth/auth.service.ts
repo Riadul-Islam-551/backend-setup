@@ -90,15 +90,66 @@ const deleteUser = async (id: string) => {
 const updateUser = async (id: string, data: UserUpdateInput) => {
   const existingUser = await prisma.users.findUnique({
     where: {
-      id: id,
+      id,
     },
   });
 
-  
+  if (!existingUser) {
+    throw notFoundError("User not found");
+  }
+
+  const updateData: {
+    name?: string;
+    password?: string;
+    bio?: string;
+    phone?: string;
+    avatar?: string;
+  } = {};
+
+  if (data.name !== undefined) {
+    updateData.name = data.name;
+  }
+
+  if (data.bio !== undefined) {
+    updateData.bio = data.bio;
+  }
+
+  if (data.phone !== undefined) {
+    updateData.phone = data.phone;
+  }
+
+  if (data.avatar !== undefined) {
+    updateData.avatar = data.avatar;
+  }
+
+  if (data.password !== undefined) {
+    updateData.password = await bcrypt.hash(
+      data.password,
+      Number(env.saltRounds),
+    );
+  }
+
+  const user = await prisma.users.update({
+    where: {
+      id,
+    },
+    data: updateData,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      bio: true,
+      phone: true,
+      avatar: true,
+    },
+  });
+
+  return user;
 };
 
 export const authService = {
   loginUser,
   registerUser,
   deleteUser,
+  updateUser,
 };

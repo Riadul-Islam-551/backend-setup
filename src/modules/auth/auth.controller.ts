@@ -2,7 +2,12 @@ import type { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync.js";
 import { authService } from "./auth.service.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
-import { userLoginSchema, userRegisterSchema } from "./auth.validation.js";
+import {
+  userLoginSchema,
+  userRegisterSchema,
+  userUpdateSchema,
+} from "./auth.validation.js";
+import { badRequestError } from "../../utils/httpStatusError.js";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
   // console.log("BODY:", req.body);
@@ -22,6 +27,20 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   ApiResponse.ok(res, "user login successfully!", result);
 });
 
+const updatedUser = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id || Array.isArray(id)) {
+    throw badRequestError("Invalid user ID");
+  }
+
+  const data = userUpdateSchema.parse(req.body);
+
+  const result = await authService.updateUser(id, data);
+
+  ApiResponse.ok(res, "User updated successfully!", result);
+});
+
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   // console.log("BODY:", req.body);
   const { id } = req.body;
@@ -35,4 +54,5 @@ export const authController = {
   loginUser,
   registerUser,
   deleteUser,
+  updatedUser,
 };
