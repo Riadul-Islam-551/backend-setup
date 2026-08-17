@@ -41,6 +41,12 @@ const updatedUser = catchAsync(async (req: Request, res: Response) => {
   ApiResponse.ok(res, "User updated successfully!", result);
 });
 
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const result = await authService.getAllUsers();
+
+  ApiResponse.ok(res, "Users retrieved successfully!", result);
+});
+
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   // console.log("BODY:", req.body);
   const { id } = req.body;
@@ -55,4 +61,5 @@ export const authController = {
   registerUser,
   deleteUser,
   updatedUser,
+  getAllUsers,
 };

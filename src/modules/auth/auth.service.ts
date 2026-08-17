@@ -147,9 +147,25 @@ const updateUser = async (id: string, data: UserUpdateInput) => {
   return user;
 };
 
+const getAllUsers = async () => {
+  const users = await prisma.users.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      bio: true,
+      phone: true,
+      avatar: true,
+    },
+  });
+
+  return users;
+};
+
 export const authService = {
   loginUser,
   registerUser,
   deleteUser,
   updateUser,
+  getAllUsers,
 };
